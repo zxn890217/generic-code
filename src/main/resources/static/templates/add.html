@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<script>
+    $(function(){
+        $("#${entityClass.className ? uncap_first}-form").bootstrapForm("validForm", {
+            url: "${pageClass.baseUrl}/add",
+            dialogId: "${entityClass.className ? uncap_first}-dialog",
+            tableId: "${entityClass.className ? uncap_first}-table",
+            submitBtnId: "${entityClass.className ? uncap_first}-saveBtn",
+            fields: {
+                //验证 TODO..
+                /*
+                <#list entityClass.columns as column>
+                ${column.fieldName}: {
+                    validators: {
+                        notEmpty: {message: '${column.remarks}不能为空'},
+                        callback: {
+                            message: "",
+                            callback: function(fieldValue, validator){}
+                        }
+                    }
+                },
+                </#list>
+                */
+            }
+        });
+    });
+</script>
+<form id="${entityClass.className ? uncap_first}-form" class="form-horizontal">
+    <#list entityClass.columns as column>
+    <#if !column.primaryKey>
+    <div class="form-group">
+        <label class="col-lg-3 control-label">${column.remarks}</label>
+        <div class="col-lg-5">
+            <input type="text" class="form-control" name="${column.fieldName}" maxlength="${column.columnSize}"/>
+        </div>
+    </div>
+    </#if>
+    </#list>
+</form>

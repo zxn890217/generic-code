@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${daoClass.packagePath}.${daoClass.className}">
+    <resultMap type="${entityClassPath}" id="${entityClass.className}Map">
+    <#list entityClass.columns as column>
+    <#if (column.primaryKey)>
+        <id property="${column.fieldName}" column="${column.columnName}"/>
+        <#else>
+        <result property="${column.fieldName}" column="${column.columnName}"/>
+    </#if>
+    </#list>
+    </resultMap>
+
+    <sql id="select-fields">
+    <#list entityClass.columns as column>${column.columnName}<#if column_has_next>,</#if></#list>
+    </sql>
+
+    <select id="get" parameterType="${entityClassPath}" resultMap="${entityClass.className}Map">
+        SELECT <include refid="select-fields"/> FROM ${tableName}
+        <#if (primaryKeys?size > 1)>
+        <where>
+            <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
+        </where>
+        <#else>
+        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
+        </#if>
+    </select>
+
+    <insert id="insert" parameterType="${entityClassPath}" <#if (daoClass.autoPrimaryKeyFieldName)??>useGeneratedKeys="true" keyProperty="${daoClass.autoPrimaryKeyFieldName}"</#if>>
+        INSERT INTO ${tableName}(<#list entityClass.columns as column><#if !column.primaryKey>${column.columnName}<#if column_has_next>,</#if></#if></#list>)
+        VALUES(<#list entityClass.columns as column><#if !column.primaryKey>${r'#{'}${column.fieldName}}<#if column_has_next>,</#if></#if></#list>)
+    </insert>
+
+    <update id="update" parameterType="${entityClassPath}">
+        UPDATE ${tableName}
+        <set>
+            <#list entityClass.columns as column>
+            <#if !column.primaryKey>${column.columnName} = ${r'#{'}${column.fieldName}},</#if>
+            </#list>
+        </set>
+        <#if (primaryKeys?size > 1)>
+        <where>
+        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
+        </where>
+        <#else>
+        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
+        </#if>
+    </update>
+
+    <update id="sensitiveUpdate" parameterType="${entityClassPath}">
+        UPDATE ${tableName}
+        <set>
+            <#list entityClass.columns as column>
+            <#if !column.primaryKey><if test="${column.fieldName} != null">${column.columnName} = ${r'#{'}${column.fieldName}},</if></#if>
+            </#list>
+        </set>
+        <#if (primaryKeys?size > 1)>
+        <where>
+        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
+        </where>
+        <#else>
+        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
+        </#if>
+    </update>
+
+    <update id="updateByConditions">
+        UPDATE ${tableName}
+        <set>
+            <#list entityClass.columns as column>
+            <#if !column.primaryKey><if test="entity.${column.fieldName} != null">${column.columnName} = ${r'#{'}entity.${column.fieldName}},</if></#if>
+            </#list>
+        </set>
+        <#if (primaryKeys?size > 1)>
+        <where>
+        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
+        </where>
+        <#else>
+        where ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
+        </#if>
+    </update>
+
+    <delete id="delete" parameterType="${entityClassPath}">
+        DELETE FROM ${tableName}
+        <#if (primaryKeys?size > 1)>
+        <where>
+        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
+        </where>
+        <#else>
+        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
+        </#if>
+    </delete>
+
+    <select id="exists" parameterType="${entityClassPath}" resultType="int">
+        select count(*) from ${tableName}
+        <where>
+            <#list entityClass.columns as column>
+            <if test="${column.fieldName} != null">${column.columnName} = ${r'#{'}${column.fieldName}},</if>
+            </#list>
+        </where>
+    </select>
+
+    <sql id="select-conditions">
+        <#list queryClass.columns as column>
+        <if test="${column.fieldName} != null">AND ${column.columnName} = ${r'#{'}${column.fieldName}}</if>
+        </#list>
+    </sql>
+
+    <select id="findByPage" parameterType="${queryClassPath}" resultMap="${entityClass.className}Map">
+        SELECT <include refid="select-fields"/> FROM ${tableName}
+        <where>
+            <include refid="select-conditions"/>
+        </where>
+        <if test="sort!= null">
+            order by ${r'${'}sort} ${r'${'}order}
+        </if>
+        <if test="limit>0">
+            limit ${r'#{'}offset},${r'#{'}limit}
+        </if>
+    </select>
+
+    <select id="count" parameterType="${queryClassPath}" resultType="int">
+        SELECT count(*) FROM ${tableName}
+        <where>
+            <include refid="select-conditions"/>
+        </where>
+    </select>
+
+    <select id="query" parameterType="${queryClassPath}" resultMap="${entityClass.className}Map">
+        SELECT <include refid="select-fields"/> FROM ${tableName}
+        <where>
+            <include refid="select-conditions"/>
+        </where>
+        <if test="sort!= null">
+            order by ${r'${'}sort} ${r'${'}order}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<script>
+    var templates = null;
+    $(function(){
+        $("#database-tables").datagrid({
+            border:false,
+            fit:true,
+            striped:true,
+            nowrap:true,
+            singleSelect:true,
+            rownumbers:true,
+            columns:
+                [[
+                    {field:'tableName',title:'表名',width:200},
+                    {field:'remarks',title:'备注',width:200}
+                ]],
+            onDblClickRow: function(index,row){
+                $.ajax({
+                    url:"/template/getTemplates",
+                    type:"post",
+                    data: {"tableName": row.tableName},
+                    dataType:"json",
+                    success:function (r) {
+                        if(r.success){
+                            $.messager.show({title: '提示', msg: r.msg});
+                            templates = r.result;
+                            $("#tableName").val(templates.tableName);
+                            $("#entity-template").form("load", templates.entityClass);
+                            $("#entity-columns").datagrid("loadData", templates.entityClass.columns);
+                            $("#queryModel-template").form("load", templates.queryClass);
+                            $("#queryModel-columns").datagrid("loadData", templates.queryClass.columns);
+                            $("#dao-template").form("load", templates.daoClass);
+                            $("#service-template").form("load", templates.serviceClass);
+                            $("#controller-template").form("load", templates.controllerClass);
+                            $("#page-template").form("load", templates.pageClass);
+                        }
+                        else{
+                            $.messager.alert("错误", r.msg, "error");
+                        }
+                    }
+                })
+            }
+        })
+    })
+</script>
+<table id="database-tables"></table>

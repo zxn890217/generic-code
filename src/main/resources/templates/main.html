@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.thymeleaf.org">
+    <head>
+        <meta name="renderer" content="webkit"/>
+        <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css"/>
+        <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css"/>
+        <link rel="stylesheet" type="text/css" href="/easyui/themes/color.css"/>
+        <script type="text/javascript" src="/easyui/jquery.min.js"/>
+        <script type="text/javascript" src="/easyui/jquery.easyui.min.js"/>
+        <script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"/>
+        <script>
+            $(function(){
+                $.fn.serializeObject = function()
+                {
+                    var o = {};
+                    var a = this.serializeArray();
+                    $.each(a, function() {
+                        if (o[this.name]) {
+                            if (!o[this.name].push) {
+                                o[this.name] = [o[this.name]];
+                            }
+                            o[this.name].push(this.value || '');
+                        } else {
+                            o[this.name] = this.value || '';
+                        }
+                    });
+                    return o;
+                };
+
+                $("#downLoadTemplate-btn").on('click', function(){
+                    var entityClass = $('#entity-template').serializeObject();
+                    var queryClass = $('#queryModel-template').serializeObject();
+                    var daoClass = $('#dao-template').serializeObject();
+                    var serviceClass = $('#service-template').serializeObject();
+                    var controllerClass = $('#controller-template').serializeObject();
+                    var pageClass = $('#page-template').serializeObject();
+                    var tableName = $("#tableName").val();
+                    var url = "/template/download";
+                    var $form = $('<form method="post" action="/template/download" target="_blank"></form>');
+                    $form.append('<input type="hidden" name="tableName" value="'+tableName+'"/>');
+                    for(var key in entityClass){
+                        var _input = $('<input type="hidden" name="entityClass.'+key+'"/>');
+                        _input.val(entityClass[key]);
+                        $form.append(_input);
+                    }
+                    for(var key in queryClass){
+                        var _input = $('<input type="hidden" name="queryClass.'+key+'"/>');
+                        _input.val(queryClass[key]);
+                        $form.append(_input);
+                    }
+                    for(var key in daoClass){
+                        var _input = $('<input type="hidden" name="daoClass.'+key+'"/>');
+                        _input.val(daoClass[key]);
+                        $form.append(_input);
+                    }
+                    for(var key in serviceClass){
+                        var _input = $('<input type="hidden" name="serviceClass.'+key+'"/>');
+                        _input.val(serviceClass[key]);
+                        $form.append(_input);
+                    }
+                    for(var key in controllerClass){
+                        var _input = $('<input type="hidden" name="controllerClass.'+key+'"/>');
+                        _input.val(controllerClass[key]);
+                        $form.append(_input);
+                    }
+                    for(var key in pageClass){
+                        var _input = $('<input type="hidden" name="pageClass.'+key+'"/>');
+                        _input.val(pageClass[key]);
+                        $form.append(_input);
+                    }
+                    $form.appendTo('body').submit().remove();
+                });
+
+            });
+        </script>
+    </head>
+    <body style="width:100%; height:100%;">
+        <input type="hidden" id="tableName"/>
+        <div class="easyui-panel" data-options="title:'代码生成器', fit:true">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'west',title:'数据库',split:true" style="width:300px;">
+                    <div class="easyui-layout" data-options="fit:true, border:false">
+                        <div data-options="region:'north',title:'数据库配置', href:'/app/main/toDataBase', border:false" style="height:270px;padding:3px;"></div>
+                        <div data-options="region:'center',title:'数据库表', href:'/app/main/toTables', border:false"></div>
+                    </div>
+                </div>
+                <div data-options="region:'center',title:'代码模板', border:false">
+                    <div class="easyui-layout" data-options="fit:true, border:false">
+                        <div data-options="region:'center'">
+                            <div id="template-tabs" class="easyui-tabs" data-options="fit:true, border:false" style="overflow: auto;">
+                                <div title="Entity">
+                                    <div class="easyui-panel" data-options="fit:true, border:false, href:'/app/main/toEntity'" style="padding:3px;"></div>
+                                </div>
+                                <div title="QueryModel">
+                                    <div class="easyui-panel" data-options="fit:true, border:false, href:'/app/main/toQueryModel'" style="padding:3px;"></div>
+                                </div>
+                                <div title="Dao">
+                                    <div class="easyui-panel" data-options="fit:true, border:false, href:'/app/main/toDao'" style="padding:3px;"></div>
+                                </div>
+                                <div title="Service">
+                                    <div class="easyui-panel" data-options="fit:true, border:false, href:'/app/main/toService'" style="padding:3px;"></div>
+                                </div>
+                                <div title="Controller">
+                                    <div class="easyui-panel" data-options="fit:true, border:false, href:'/app/main/toController'" style="padding:3px;"></div>
+                                </div>
+                                <div title="Web Page">
+                                    <div class="easyui-panel" data-options="fit:true, border:false, href:'/app/main/toPage'" style="padding:3px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-options="region:'south'" style="text-align:right; height:36px; padding:3px;">
+                            <a id="downLoadTemplate-btn" class="easyui-linkbutton">下载模板</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

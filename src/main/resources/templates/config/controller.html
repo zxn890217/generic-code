@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<div class="easyui-layout" data-options="fit:true, border:false">
+    <form id="controller-template">
+        <div data-options="region:'north',split:false" style="padding:3px;height:180px;">
+            <div style="margin-bottom:5px;">
+                <input class="easyui-textbox" name="className" data-options="label:'类名', labelPosition:'top', required:true" style="width:100%;"/>
+            </div>
+            <div style="margin-bottom:5px;">
+                <input class="easyui-textbox" name="packagePath" data-options="label:'包', labelPosition:'top', required:true" style="width:100%;"/>
+            </div>
+            <div style="margin-bottom:5px;">
+                <input class="easyui-textbox" name="baseController" data-options="label:'继承类', labelPosition:'top', icons: [{
+                    iconCls:'icon-clear',
+                    handler: function(e){
+                        $(e.data.target).textbox('setValue', '');
+                        $('#controller-detail').switchbutton('check');
+                        $('#controller-add').switchbutton('check');
+                        $('#controller-update').switchbutton('check');
+                        $('#controller-exists').switchbutton('check');
+                        $('#controller-list').switchbutton('check');
+                        $('#controller-query').switchbutton('check');
+                    }
+                }]" style="width:100%;"/>
+            </div>
+        </div>
+        <div data-options="title:'接口方法', region:'center',split:false" style="padding:3px;">
+            <table>
+                <tr>
+                    <th style="text-align: right">get</th><td><input id="controller-detail" class="easyui-switchbutton" name="get" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">add</th><td><input id="controller-add" class="easyui-switchbutton" name="add" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">update</th><td><input id="controller-update" class="easyui-switchbutton" name="update" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">exists</th><td><input id="controller-exists" class="easyui-switchbutton" name="exists" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">list</th><td><input id="controller-list" class="easyui-switchbutton" name="list" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">query</th><td><input id="controller-query" class="easyui-switchbutton" name="query" data-options="value:'true'"/></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>

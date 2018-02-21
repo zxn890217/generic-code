@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<script>
+$(function(){
+utils.bootstrapTable({
+    id: "${entityClass.className ? uncap_first}-table",
+    url: "${pageClass.baseUrl}/list",
+    singleSelect: true,
+    pagination: true,
+    searchForm: '${entityClass.className ? uncap_first}-searchForm',
+    columns: [
+        {field:'check', checkbox:true},
+        <#list entityClass.columns as column>
+        <#if column.primaryKey>{field:'${column.fieldName}', title:'${column.remarks}', visible:false}<#else>{field:'${column.fieldName}', title:'${column.remarks}'}</#if><#if column_has_next>, </#if>
+        </#list>
+    ],
+    buttons: [
+        {text:"添加", iconCls:"glyphicon glyphicon-plus",
+            handler:function(){
+                utils.dialog({
+                    id: "${entityClass.className ? uncap_first}-dialog",
+                    title: "添加",
+                    url: "/pages/${entityClass.className ? uncap_first}/add.html",
+                    buttons: [{label: "保存", id: "${entityClass.className ? uncap_first}-saveBtn"}]
+                });
+            }},
+        {text:"修改", iconCls:"glyphicon glyphicon-pencil",
+            handler:function(){
+                var rows = $("#${entityClass.className ? uncap_first}-table").bootstrapTable("getSelections");
+                if(rows.length!=1){
+                    Lobibox.alert('info', {title: "提示", msg: "请选定一行数据"});
+                }
+                else{
+                    utils.dialog({
+                        id: "${entityClass.className ? uncap_first}-dialog",
+                        title: "修改",
+                        url: "/pages/${entityClass.className ? uncap_first}/update.html",
+                        buttons: [{label: "修改", id: "${entityClass.className ? uncap_first}-editBtn"}],
+                        data: rows[0]
+                    });
+                }
+            }},
+        {text:"删除", iconCls:"glyphicon glyphicon-remove",
+            handler:function(){
+                var rows = $("#${entityClass.className ? uncap_first}-table").bootstrapTable('getSelections');
+                if(rows.length==0){
+                    Lobibox.alert('info', {title: "提示", msg: "请先选中要删除的记录"});
+                }
+                else{
+                    utils.deleteAjax({
+                        url: "${pageClass.baseUrl}/delete",
+                        data: {<#list primaryKeys as column>${column.fieldName}:rows[0].${column.fieldName}<#if column_has_next>, </#if></#list>},
+                        tableId: "${entityClass.className ? uncap_first}-table"
+                    });
+                }
+            }},
+        {text:"详情", iconCls:"glyphicon glyphicon-file",
+            handler:function(){
+                var rows = $("#${entityClass.className ? uncap_first}-table").bootstrapTable('getSelections');
+                if(rows.length==0){
+                    Lobibox.alert('info', {title: "提示", msg: "请先选中要查看的记录"});
+                }
+                else{
+                    utils.dialog({
+                        id: "${entityClass.className ? uncap_first}-dialog",
+                        title: "详情",
+                        url: "/pages/${entityClass.className ? uncap_first}/detail.html",
+                        data: rows[0]
+                    });
+                }
+            }}
+    ]});
+});
+</script>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form id="${entityClass.className ? uncap_first}-searchForm" class="searchform">
+            <#list queryClass.columns as column>
+            <div><input class="form-control" type="text" name="${column.fieldName}" placeholder="${column.remarks}" maxlength="${column.columnSize}"/></div>
+            </#list>
+        </form>
+    </div>
+</div>
+<table id="${entityClass.className ? uncap_first}-table"></table>

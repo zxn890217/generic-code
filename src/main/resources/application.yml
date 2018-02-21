@@ -1,0 +1,28 @@
+server:
+  port: 9090
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  thymeleaf:
+    mode: XHTML
+    cache: false
+database:
+  url: jdbc:mysql://localhost:3306/usercenter?useUnicode=true&characterEncoding=UTF-8
+  driver: com.mysql.jdbc.Driver
+  userName: root
+  password: test
+template:
+  entityPackagePath: com.example.demo.entity
+  baseQuery: com.example.demo.common.base.QueryBase
+  daoPackagePath: com.example.demo.dao
+  servicePackagePath: com.example.demo.service
+  controllerPackagePath: com.example.demo.controller
+  baseDao: com.example.demo.common.base.BaseDao
+  baseService: com.example.demo.common.base.BaseService
+  baseController: com.example.demo.common.base.BaseController
+  pageResponseClassPath: com.example.demo.common.base.Page
+  responseResultClassPath: com.example.demo.common.base.ResponseResult

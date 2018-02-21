@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<div class="easyui-layout" data-options="fit:true, border:false">
+    <form id="page-template">
+        <div data-options="region:'north',split:false" style="padding:3px;height:70px;">
+            <div style="margin-bottom:5px;">
+                <input class="easyui-textbox" name="baseUrl" data-options="label:'基路径', labelPosition:'top', required:true" style="width:100%;"/>
+            </div>
+        </div>
+        <div data-options="title:'页面', region:'center',split:false" style="padding:3px;">
+            <table>
+                <tr>
+                    <th style="text-align: right">列表</th><td><input class="easyui-switchbutton" name="listPage" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">添加</th><td><input class="easyui-switchbutton" name="addPage" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">修改</th><td><input class="easyui-switchbutton" name="updatePage" data-options="value:'true'"/></td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">详情</th><td><input class="easyui-switchbutton" name="add" data-options="value:'true'"/></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>

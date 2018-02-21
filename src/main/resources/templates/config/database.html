@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<script>
+    $(function(){
+        $("#database-config").form('load','/database/getConfig');
+
+        $("#connect-btn").bind('click',function(){
+            $.ajax({
+                url:"/database/connect",
+                type:"post",
+                data: $("#database-config").serialize(),
+                dataType:"json",
+                success:function (r) {
+                    if(r.success){
+                        $("#database-tables").datagrid("loadData", r.result);
+                    }
+                    else{
+                        $.messager.alert("错误", r.msg, "error");
+                        $("#database-tables").datagrid("loadData", []);
+                    }
+                }
+            });
+        });
+    });
+</script>
+<form id="database-config">
+    <div style="margin-bottom:5px;">
+        <select class="easyui-combobox" name="driver" data-options="label:'Driver', labelPosition:'top', required:true" style="width:100%;">
+            <option value="com.mysql.jdbc.Driver">com.mysql.jdbc.Driver</option>
+            <option value="oracle.jdbc.driver.OracleDriver">oracle.jdbc.driver.OracleDriver</option>
+        </select>
+    </div>
+    <div style="margin-bottom:5px;">
+        <input class="easyui-textbox" name="url" data-options="label:'URL', labelPosition:'top', required:true" style="width:100%;"/>
+    </div>
+    <div style="margin-bottom:5px;">
+        <input class="easyui-textbox" name="userName" data-options="label:'用户名', labelPosition:'top', required:true" style="width:100%;"/>
+    </div>
+    <div style="margin-bottom:5px;">
+        <input class="easyui-passwordbox" name="password" data-options="label:'密码', labelPosition:'top', required:true" style="width:100%;"/>
+    </div>
+    <div style="margin-bottom:5px; text-align: right;">
+        <a id="connect-btn" class="easyui-linkbutton" data-options="iconCls: 'icon-reload'">连接</a>
+    </div>
+</form>
