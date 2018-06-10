@@ -9,7 +9,7 @@ public class TableModel {
 	//表名
 	private String tableName;
 	//主键列
-	private List<ColumnModel> primaryKeyColumns;
+	private ColumnModel primaryKeyColumn;
 	//列
 	private List<ColumnModel> columns;
 	//需要引入包
@@ -25,12 +25,12 @@ public class TableModel {
 		this.tableName = tableName;
 	}
 
-	public List<ColumnModel> getPrimaryKeyColumns() {
-		return primaryKeyColumns;
+	public ColumnModel getPrimaryKeyColumn() {
+		return primaryKeyColumn;
 	}
 
-	public void setPrimaryKeyColumns(List<ColumnModel> primaryKeyColumns) {
-		this.primaryKeyColumns = primaryKeyColumns;
+	public void setPrimaryKeyColumn(ColumnModel primaryKeyColumn) {
+		this.primaryKeyColumn = primaryKeyColumn;
 	}
 
 	public List<ColumnModel> getColumns() {

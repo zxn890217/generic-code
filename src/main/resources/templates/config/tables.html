@@ -9,36 +9,19 @@
             nowrap:true,
             singleSelect:true,
             rownumbers:true,
+            fitColumns:true,
             columns:
                 [[
                     {field:'tableName',title:'表名',width:200},
                     {field:'remarks',title:'备注',width:200}
                 ]],
             onDblClickRow: function(index,row){
-                $.ajax({
-                    url:"/template/getTemplates",
-                    type:"post",
-                    data: {"tableName": row.tableName},
-                    dataType:"json",
-                    success:function (r) {
-                        if(r.success){
-                            $.messager.show({title: '提示', msg: r.msg});
-                            templates = r.result;
-                            $("#tableName").val(templates.tableName);
-                            $("#entity-template").form("load", templates.entityClass);
-                            $("#entity-columns").datagrid("loadData", templates.entityClass.columns);
-                            $("#queryModel-template").form("load", templates.queryClass);
-                            $("#queryModel-columns").datagrid("loadData", templates.queryClass.columns);
-                            $("#dao-template").form("load", templates.daoClass);
-                            $("#service-template").form("load", templates.serviceClass);
-                            $("#controller-template").form("load", templates.controllerClass);
-                            $("#page-template").form("load", templates.pageClass);
-                        }
-                        else{
-                            $.messager.alert("错误", r.msg, "error");
-                        }
-                    }
-                })
+                if(window.confirm("是否要生成代码模板？")){
+                    var url = "/template/download";
+                    var $form = $('<form method="post" action="/template/download" target="_blank"></form>');
+                    $form.append('<input type="hidden" name="tableName" value="'+row.tableName+'"/>');
+                    $form.appendTo('body').submit().remove();
+                }
             }
         })
     })

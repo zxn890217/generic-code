@@ -15,15 +15,9 @@
     <#list entityClass.columns as column>${column.columnName}<#if column_has_next>,</#if></#list>
     </sql>
 
-    <select id="get" parameterType="${entityClassPath}" resultMap="${entityClass.className}Map">
-        SELECT <include refid="select-fields"/> FROM ${tableName}
-        <#if (primaryKeys?size > 1)>
-        <where>
-            <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
-        </where>
-        <#else>
-        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
-        </#if>
+    <select id="get" parameterType="Long" resultMap="${entityClass.className}Map">
+        SELECT * FROM ${tableName}
+        WHERE ${primaryKey.columnName} = ${r'#{'}id}
     </select>
 
     <insert id="insert" parameterType="${entityClassPath}" <#if (daoClass.autoPrimaryKeyFieldName)??>useGeneratedKeys="true" keyProperty="${daoClass.autoPrimaryKeyFieldName}"</#if>>
@@ -38,13 +32,7 @@
             <#if !column.primaryKey>${column.columnName} = ${r'#{'}${column.fieldName}},</#if>
             </#list>
         </set>
-        <#if (primaryKeys?size > 1)>
-        <where>
-        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
-        </where>
-        <#else>
-        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
-        </#if>
+        WHERE ${primaryKey.columnName} = ${r'#{'}id}
     </update>
 
     <update id="sensitiveUpdate" parameterType="${entityClassPath}">
@@ -54,40 +42,12 @@
             <#if !column.primaryKey><if test="${column.fieldName} != null">${column.columnName} = ${r'#{'}${column.fieldName}},</if></#if>
             </#list>
         </set>
-        <#if (primaryKeys?size > 1)>
-        <where>
-        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
-        </where>
-        <#else>
-        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
-        </#if>
-    </update>
-
-    <update id="updateByConditions">
-        UPDATE ${tableName}
-        <set>
-            <#list entityClass.columns as column>
-            <#if !column.primaryKey><if test="entity.${column.fieldName} != null">${column.columnName} = ${r'#{'}entity.${column.fieldName}},</if></#if>
-            </#list>
-        </set>
-        <#if (primaryKeys?size > 1)>
-        <where>
-        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
-        </where>
-        <#else>
-        where ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
-        </#if>
+        WHERE ${primaryKey.columnName} = ${r'#{'}id}
     </update>
 
     <delete id="delete" parameterType="${entityClassPath}">
         DELETE FROM ${tableName}
-        <#if (primaryKeys?size > 1)>
-        <where>
-        <#list primaryKeys as column>AND ${column.columnName} = ${r'#{'}${column.fieldName}}</#list>
-        </where>
-        <#else>
-        WHERE ${primaryKeys[0].columnName} = ${r'#{'}${primaryKeys[0].fieldName}}
-        </#if>
+        WHERE ${primaryKey.columnName} = ${r'#{'}id}
     </delete>
 
     <select id="exists" parameterType="${entityClassPath}" resultType="int">
@@ -100,12 +60,19 @@
     </select>
 
     <sql id="select-conditions">
-        <#list queryClass.columns as column>
+        <#list entityClass.columns as column>
         <if test="${column.fieldName} != null">AND ${column.columnName} = ${r'#{'}${column.fieldName}}</if>
         </#list>
     </sql>
 
-    <select id="findByPage" parameterType="${queryClassPath}" resultMap="${entityClass.className}Map">
+    <select id="count" parameterType="java.util.Map" resultType="int">
+        SELECT count(*) FROM ${tableName}
+        <where>
+            <include refid="select-conditions"/>
+        </where>
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="${entityClass.className}Map">
         SELECT <include refid="select-fields"/> FROM ${tableName}
         <where>
             <include refid="select-conditions"/>
@@ -115,23 +82,6 @@
         </if>
         <if test="limit>0">
             limit ${r'#{'}offset},${r'#{'}limit}
-        </if>
-    </select>
-
-    <select id="count" parameterType="${queryClassPath}" resultType="int">
-        SELECT count(*) FROM ${tableName}
-        <where>
-            <include refid="select-conditions"/>
-        </where>
-    </select>
-
-    <select id="query" parameterType="${queryClassPath}" resultMap="${entityClass.className}Map">
-        SELECT <include refid="select-fields"/> FROM ${tableName}
-        <where>
-            <include refid="select-conditions"/>
-        </where>
-        <if test="sort!= null">
-            order by ${r'${'}sort} ${r'${'}order}
         </if>
     </select>
 </mapper>

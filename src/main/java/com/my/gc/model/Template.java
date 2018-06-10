@@ -13,9 +13,6 @@ public class Template {
     private String tableName;
     private ModelClass entityClass;
     private String entityClassPath;
-    private ModelClass queryClass;
-    private String queryClassPath;
-    private String queryExtendClassName;
     private DaoClass daoClass;
     private String daoClassPath;
     private ServiceClass serviceClass;
@@ -26,30 +23,21 @@ public class Template {
     private String pageResponseClassName;
     private String responseResultClassPath;
     private String responseResultClassName;
-    private List<ColumnModel> primaryKeys;
+    private ColumnModel primaryKey;
 
     public Template(){}
 
     public Template(String tableName, TemplateConfig config){
         this.tableName = tableName;
         TableModel tm = JdbcUtil.getTableStructure(tableName);
+        this.primaryKey = tm.getPrimaryKeyColumn();
         this.entityClass = new ModelClass(tm, config.getEntityPackagePath());
-        this.queryClass = new ModelClass(tm, config.getEntityPackagePath(), config.getBaseQuery());
-        if(queryClass.getExtendsClass()!=null && !"".equals(queryClass.getExtendsClass())){
-            queryExtendClassName = queryClass.getExtendsClass().substring(queryClass.getExtendsClass().lastIndexOf(".")+1);
-        }
         this.daoClass = new DaoClass(entityClass.getClassName()+"Dao", config.getDaoPackagePath(), config.getBaseDao(), entityClass);
         this.serviceClass = new ServiceClass(entityClass.getClassName()+"Service", config.getServicePackagePath(), config.getBaseService());
         this.controllerClass = new ControllerClass(entityClass.getClassName()+"Controller", config.getControllerPackagePath(), config.getBaseController());
         this.pageClass = new PageClass("/"+JdbcUtil.toFirstCharLowerCase(entityClass.getClassName()));
         this.entityClassPath = entityClass.getPackagePath() + "." + entityClass.getClassName();
-        primaryKeys = new ArrayList<ColumnModel>();
-        for(ColumnModel cm : entityClass.getColumns()){
-            if(cm.isPrimaryKey())
-                primaryKeys.add(cm);
-        }
         this.daoClassPath = daoClass.getPackagePath()+"."+daoClass.getClassName();
-        this.queryClassPath = queryClass.getPackagePath()+"."+queryClass.getClassName();
         this.serviceClassPath = serviceClass.getPackagePath()+"."+serviceClass.getClassName();
         this.pageResponseClassPath = config.getPageResponseClassPath();
         this.responseResultClassPath = config.getResponseResultClassPath();
@@ -60,26 +48,18 @@ public class Template {
 
     }
 
-    public Template(String tableName, ModelClass entityClass, ModelClass queryClass, DaoClass daoClass, ServiceClass serivceClass, ControllerClass controllerClass, PageClass pageClass, String pageResponseClassPath, String responseResultClassPath) {
+    public Template(String tableName, ModelClass entityClass, DaoClass daoClass, ServiceClass serivceClass, ControllerClass controllerClass, PageClass pageClass, String pageResponseClassPath, String responseResultClassPath) {
         this.tableName = tableName;
         this.entityClass = entityClass;
-        this.queryClass = queryClass;
         this.daoClass = daoClass;
         this.serviceClass = serivceClass;
         this.controllerClass = controllerClass;
         this.pageClass = pageClass;
         if(entityClass!=null) {
             this.entityClassPath = entityClass.getPackagePath() + "." + entityClass.getClassName();
-            primaryKeys = new ArrayList<ColumnModel>();
             for(ColumnModel cm : entityClass.getColumns()){
                 if(cm.isPrimaryKey())
-                    primaryKeys.add(cm);
-            }
-        }
-        if(queryClass!=null){
-            this.queryClassPath = queryClass.getPackagePath()+"."+queryClass.getClassName();
-            if(queryClass.getExtendsClass()!=null && !"".equals(queryClass.getExtendsClass())){
-                queryExtendClassName = queryClass.getExtendsClass().substring(queryClass.getExtendsClass().lastIndexOf(".")+1);
+                    primaryKey = cm;
             }
         }
         if(serivceClass!=null)
@@ -114,30 +94,6 @@ public class Template {
 
     public void setEntityClassPath(String entityClassPath) {
         this.entityClassPath = entityClassPath;
-    }
-
-    public ModelClass getQueryClass() {
-        return queryClass;
-    }
-
-    public void setQueryClass(ModelClass queryClass) {
-        this.queryClass = queryClass;
-    }
-
-    public String getQueryClassPath() {
-        return queryClassPath;
-    }
-
-    public void setQueryClassPath(String queryClassPath) {
-        this.queryClassPath = queryClassPath;
-    }
-
-    public String getQueryExtendClassName() {
-        return queryExtendClassName;
-    }
-
-    public void setQueryExtendClassName(String queryExtendClassName) {
-        this.queryExtendClassName = queryExtendClassName;
     }
 
     public DaoClass getDaoClass() {
@@ -212,11 +168,11 @@ public class Template {
         this.responseResultClassName = responseResultClassName;
     }
 
-    public List<ColumnModel> getPrimaryKeys() {
-        return primaryKeys;
+    public ColumnModel getPrimaryKey() {
+        return primaryKey;
     }
 
-    public void setPrimaryKeys(List<ColumnModel> primaryKeys) {
-        this.primaryKeys = primaryKeys;
+    public void setPrimaryKeys(ColumnModel primaryKey) {
+        this.primaryKey = primaryKey;
     }
 }

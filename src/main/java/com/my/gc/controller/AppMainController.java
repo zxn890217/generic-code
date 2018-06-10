@@ -15,17 +15,6 @@ public class AppMainController {
         return "main";
     }
 
-    @RequestMapping(value="/main/toEntity")
-    public String toEntity(){
-        return "config/entity";
-    }
-
-
-    @RequestMapping(value="/main/toQueryModel")
-    public String toQueryModel(){
-        return "config/queryModel";
-    }
-
     @RequestMapping(value="/main/toDataBase")
     public String toDataBase(){
         return "config/database";
@@ -34,25 +23,5 @@ public class AppMainController {
     @RequestMapping(value="/main/toTables")
     public String toTables(){
         return "config/tables";
-    }
-
-    @RequestMapping(value="/main/toDao")
-    public String toDao(){
-        return "config/dao";
-    }
-
-    @RequestMapping(value="/main/toService")
-    public String toService(){
-        return "config/service";
-    }
-
-    @RequestMapping(value="/main/toController")
-    public String toController(){
-        return "config/controller";
-    }
-
-    @RequestMapping(value="/main/toPage")
-    public String toList(){
-        return "config/page";
     }
 }

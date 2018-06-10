@@ -17,7 +17,6 @@ database:
   password: test
 template:
   entityPackagePath: com.example.demo.entity
-  baseQuery: com.example.demo.common.base.QueryBase
   daoPackagePath: com.example.demo.dao
   servicePackagePath: com.example.demo.service
   controllerPackagePath: com.example.demo.controller
@@ -26,3 +25,4 @@ template:
   baseController: com.example.demo.common.base.BaseController
   pageResponseClassPath: com.example.demo.common.base.Page
   responseResultClassPath: com.example.demo.common.base.ResponseResult
+  table: user

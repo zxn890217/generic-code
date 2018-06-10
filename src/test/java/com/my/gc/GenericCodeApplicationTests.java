@@ -24,14 +24,10 @@ public class GenericCodeApplicationTests {
 	@Test
 	public void test(){
 		Template t = new Template("user", config);
-		FreemarkerUtil.genTemplate("mybatis.xml", t, System.out);
+		//FreemarkerUtil.genTemplate("mybatis.xml", t, System.out);
 		//FreemarkerUtil.genTemplate("Dao.java", t, System.out);
 		//FreemarkerUtil.genTemplate("Service.java", t, System.out);
-		//FreemarkerUtil.genTemplate("Controller.java", t, System.out);
-		//FreemarkerUtil.genTemplate("list.html", t, System.out);
-		//FreemarkerUtil.genTemplate("add.html", t, System.out);
-		//FreemarkerUtil.genTemplate("update.html", t, System.out);
+		FreemarkerUtil.genTemplate("Controller.java", t, System.out);
 		//FreemarkerUtil.genTemplate("Entity.java", t, System.out);
-		//FreemarkerUtil.genTemplate("Query.java", t, System.out);
 	}
 }

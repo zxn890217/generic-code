@@ -54,7 +54,7 @@ public class JdbcUtil {
 	 */
 	public static TableModel getTableStructure(String tableName){
 		List<ColumnModel> columnModelList = new ArrayList<ColumnModel>();
-		List<ColumnModel> primaryKeyColumns = new ArrayList<ColumnModel>();
+		ColumnModel primaryKeyColumn = null;
 		Set<String> imports = new HashSet<String>();
 		try {
 			//TODO 表相关
@@ -94,15 +94,14 @@ public class JdbcUtil {
 				columnModel.setFieldType(fieldType);
     			columnModelList.add(columnModel);
     			if(columnModel.isPrimaryKey())
-    				primaryKeyColumns.add(columnModel);
-    			//System.out.println(columnModel.toString());
+    				primaryKeyColumn=columnModel;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		TableModel table = new TableModel();
 		table.setColumns(columnModelList);
-		table.setPrimaryKeyColumns(primaryKeyColumns);
+		table.setPrimaryKeyColumn(primaryKeyColumn);
 		table.setImports(imports);
 		table.setTableName(tableName);
 		return table;
@@ -250,13 +249,6 @@ public class JdbcUtil {
 	 * 获取查询字段
 	 * */
 	public static List<ColumnModel> getQueryFields(TableModel table){
-		if(table.getPrimaryKeyColumns().size()==1 && table.getPrimaryKeyColumns().get(0).isAutoIncrement()){
-			List<ColumnModel> columns = new ArrayList<ColumnModel>();
-			for(ColumnModel cm : table.getColumns()){
-				columns.add(cm);
-			}
-			return columns;
-		}
 		return table.getColumns();
 	}
 
