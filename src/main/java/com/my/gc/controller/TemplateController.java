@@ -56,6 +56,9 @@ public class TemplateController {
             FreemarkerUtil.genTemplate("Service.java", t, new FileOutputStream(new File(floder.getPath() + "/" + t.getServiceClass().getClassName() + ".java")));
             FreemarkerUtil.genTemplate("Controller.java", t, new FileOutputStream(new File(floder.getPath() + "/" + t.getControllerClass().getClassName() + ".java")));
             FreemarkerUtil.genTemplate("Entity.java", t, new FileOutputStream(new File(floder.getPath() + "/" + t.getEntityClass().getClassName() + ".java")));
+            FreemarkerUtil.genTemplate("table.vue", t, new FileOutputStream(new File(floder.getPath() + "/table.vue")));
+            FreemarkerUtil.genTemplate("add.vue", t, new FileOutputStream(new File(floder.getPath() + "/add.vue")));
+            FreemarkerUtil.genTemplate("update.vue", t, new FileOutputStream(new File(floder.getPath() + "/update.vue")));
             String filename = new String("代码".getBytes("gb2312" ), "ISO8859-1");
             response.setHeader("Content-disposition", "attachment; filename="+ filename+".zip");
             response.setContentType("application/octet-stream");

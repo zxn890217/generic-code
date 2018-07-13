@@ -15,6 +15,14 @@ public class ColumnModel {
 	private int columnSize;
 	private String columnDef;
 	private String remarks;
+	/**
+	 * ISO规则用来确定某一列的是否可为空(等同于NULLABLE的值:[ 0:'YES'; 1:'NO'; 2:''; ])
+	 * YES -- 该列可以有空值;
+	 * NO -- 该列不能为空;
+	 * 空字符串--- 不知道该列是否可为空
+	 */
+	private int nullable;
+	private int maxLength;
 
 	public boolean isPrimaryKey() {
 		return isPrimaryKey;
@@ -112,7 +120,23 @@ public class ColumnModel {
 	public void setFieldType(String fieldType) {
 		this.fieldType = fieldType;
 	}
-	
+
+	public int getNullable() {
+		return nullable;
+	}
+
+	public void setNullable(int nullable) {
+		this.nullable = nullable;
+	}
+
+	public int getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
+	}
+
 	public boolean isObject(){
 		if (dataType.equals("int") || dataType.equals("short") || dataType.equals("byte") || dataType.equals("float")
 				|| dataType.equals("double") || dataType.equals("long") || dataType.equals("boolean")

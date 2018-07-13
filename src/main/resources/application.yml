@@ -16,13 +16,12 @@ database:
   userName: root
   password: test
 template:
-  entityPackagePath: com.example.demo.entity
-  daoPackagePath: com.example.demo.dao
-  servicePackagePath: com.example.demo.service
-  controllerPackagePath: com.example.demo.controller
-  baseDao: com.example.demo.common.base.BaseDao
-  baseService: com.example.demo.common.base.BaseService
-  baseController: com.example.demo.common.base.BaseController
-  pageResponseClassPath: com.example.demo.common.base.Page
-  responseResultClassPath: com.example.demo.common.base.ResponseResult
-  table: user
+  entityPackagePath: com.example.usercenter.sys.entity
+  daoPackagePath: com.example.usercenter.sys.dao
+  servicePackagePath: com.example.usercenter.sys.service
+  controllerPackagePath: com.example.usercenter.sys.web
+  baseDao: com.example.usercenter.common.base.BaseDao
+  baseService: com.example.usercenter.common.base.BaseService
+  baseController: com.example.usercenter.common.base.BaseRestController
+  pageResponseClassPath: com.example.usercenter.common.base.Page
+  responseResultClassPath: com.example.usercenter.common.base.RespBody
