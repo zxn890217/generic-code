@@ -34,6 +34,7 @@
                     :current-page.sync="currentPage"
                     :page-sizes="pageSizes"
                     :page-size="pageSize"
+                    :sort-change="sortChange"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
             </el-pagination>
