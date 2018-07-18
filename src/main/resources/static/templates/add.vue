@@ -9,7 +9,7 @@
       </#if>
       </#list>
     </el-form>
-    <div slot="footer" class="dialog-footer" v-loading="submitting" :element-loading-text="$t('dialog.submitting')" element-loading-spinner="el-icon-loading">
+    <div slot="footer" class="dialog-footer">
             <el-button @click="onClose">{{$t('dialog.cancel')}}</el-button>
             <el-button type="primary" @click="save">{{$t('dialog.save')}}</el-button>
     </div>
@@ -36,7 +36,7 @@
               <#if column.maxLength gt 0 >
               { max: ${column.maxLength}, message: vsprintf(this.$t('rules.message.maxLen'), ${column.maxLength}), trigger: 'blur' }
               </#if>
-            ],
+            ]<#if column_has_next>,</#if>
             </#if>
             </#list>
           }

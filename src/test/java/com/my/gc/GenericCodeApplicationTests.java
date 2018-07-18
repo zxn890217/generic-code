@@ -29,8 +29,11 @@ public class GenericCodeApplicationTests {
 		//FreemarkerUtil.genTemplate("Service.java", t, System.out);
 		//FreemarkerUtil.genTemplate("Controller.java", t, System.out);
 		//FreemarkerUtil.genTemplate("Entity.java", t, System.out);
-		FreemarkerUtil.genTemplate("table.vue", t, System.out);
+		//FreemarkerUtil.genTemplate("table.vue", t, System.out);
 		//FreemarkerUtil.genTemplate("add.vue", t, System.out);
 		//FreemarkerUtil.genTemplate("update.vue", t, System.out);
+		//FreemarkerUtil.genTemplate("detail.vue", t, System.out);
+		//FreemarkerUtil.genTemplate("zh.js", t, System.out);
+		FreemarkerUtil.genTemplate("en.js", t, System.out);
 	}
 }
