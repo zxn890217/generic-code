@@ -77,10 +77,10 @@
         <where>
             <include refid="select-conditions"/>
         </where>
-        <if test="sort!= null">
+        <if test="sort != null">
             order by ${r'${'}sort} ${r'${'}order}
         </if>
-        <if test="limit>0">
+        <if test="limit > 0">
             limit ${r'#{'}offset},${r'#{'}limit}
         </if>
     </select>

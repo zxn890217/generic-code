@@ -24,7 +24,9 @@
         <el-table v-loading="loading" :data="tableData" border highlight-current-row @row-click="onRowSelected" style="width: 100%" @sort-change="sortChange">
             <el-table-column type="index" :label="$t('table.index')" :index="indexMethod" align="center" width="55"></el-table-column>
             <#list entityClass.columns as column>
+            <#if !column.primaryKey>
             <el-table-column prop="${column.fieldName}" :label="$t('${entityClass.className ? uncap_first}.${column.fieldName}')"></el-table-column>
+            </#if>
             </#list>
         </el-table>
         <div class="pagination-container">

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('table.add')" width="560px" :visible.sync="visible" @close="onClose">
+  <el-dialog :title="$t('table.update')" width="560px" :visible.sync="visible" @close="onClose">
     <el-form :model="form" :rules="rules" ref="dialog-form" label-width="70px" size="small">
       <#list entityClass.columns as column>
       <#if !column.primaryKey>
@@ -18,14 +18,13 @@
 
 <script>
   import { vsprintf } from 'sprintf-js/dist/sprintf.min.js'
-  import { saveToSubmit } from '@/utils/utils'
+  import { updateToSubmit } from '@/utils/utils'
 
   export default {
     data() {
       var form = JSON.parse(JSON.stringify(this.$parent.selectedRow));
       return {
         visible: true,
-        submitting: false,
         form: form,
         rules:{
           <#list entityClass.columns as column>

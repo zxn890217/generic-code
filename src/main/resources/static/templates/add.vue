@@ -24,7 +24,6 @@
     data() {
       return {
         visible: true,
-        submitting: false,
         form: {},
           rules:{
             <#list entityClass.columns as column>

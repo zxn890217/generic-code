@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :title="$t('table.add')" width="560px" :visible.sync="visible" @close="onClose">
-    <el-form :model="form" :rules="rules" ref="dialog-form" label-width="70px" size="small">
+  <el-dialog :title="$t('table.detail')" width="560px" :visible.sync="visible" @close="onClose">
+    <el-form :model="form" label-width="70px" size="small">
       <#list entityClass.columns as column>
       <#if !column.primaryKey>
       <el-form-item :label="$t('${entityClass.className ? uncap_first}.${column.fieldName}')">
