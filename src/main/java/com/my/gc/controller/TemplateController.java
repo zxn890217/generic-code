@@ -59,7 +59,10 @@ public class TemplateController {
             FreemarkerUtil.genTemplate("table.vue", t, new FileOutputStream(new File(floder.getPath() + "/table.vue")));
             FreemarkerUtil.genTemplate("add.vue", t, new FileOutputStream(new File(floder.getPath() + "/add.vue")));
             FreemarkerUtil.genTemplate("update.vue", t, new FileOutputStream(new File(floder.getPath() + "/update.vue")));
-            String filename = new String("代码".getBytes("gb2312" ), "ISO8859-1");
+            FreemarkerUtil.genTemplate("detail.vue", t, new FileOutputStream(new File(floder.getPath() + "/detail.vue")));
+            FreemarkerUtil.genTemplate("zh.js", t, new FileOutputStream(new File(floder.getPath() + "/zh.js")));
+            FreemarkerUtil.genTemplate("en.js", t, new FileOutputStream(new File(floder.getPath() + "/en.js")));
+            String filename = new String(template.getTableName().getBytes("gb2312" ), "ISO8859-1");
             response.setHeader("Content-disposition", "attachment; filename="+ filename+".zip");
             response.setContentType("application/octet-stream");
             //创建zip输出流

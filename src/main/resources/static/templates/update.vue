@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('table.add')" width="560px" :visible.sync="visible" @close="onClose">
+  <el-dialog :title="$t('table.update')" width="560px" :visible.sync="visible" @close="onClose">
     <el-form :model="form" :rules="rules" ref="dialog-form" label-width="70px" size="small">
       <#list entityClass.columns as column>
       <#if !column.primaryKey>
@@ -9,7 +9,7 @@
       </#if>
       </#list>
     </el-form>
-    <div slot="footer" class="dialog-footer" v-loading="submitting" :element-loading-text="$t('dialog.submitting')" element-loading-spinner="el-icon-loading">
+    <div slot="footer" class="dialog-footer">
       <el-button @click="onClose">{{$t('dialog.cancel')}}</el-button>
       <el-button type="primary" @click="save">{{$t('dialog.save')}}</el-button>
     </div>
@@ -18,14 +18,13 @@
 
 <script>
   import { vsprintf } from 'sprintf-js/dist/sprintf.min.js'
-  import { saveToSubmit } from '@/utils/utils'
+  import { updateToSubmit } from '@/utils/utils'
 
   export default {
     data() {
       var form = JSON.parse(JSON.stringify(this.$parent.selectedRow));
       return {
         visible: true,
-        submitting: false,
         form: form,
         rules:{
           <#list entityClass.columns as column>
@@ -37,7 +36,7 @@
             <#if column.maxLength gt 0 >
             { max: ${column.maxLength}, message: vsprintf(this.$t('rules.message.maxLen'), ${column.maxLength}), trigger: 'blur' }
             </#if>
-           ],
+           ]<#if column_has_next>,</#if>
           </#if>
           </#list>
         }

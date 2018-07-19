@@ -11,6 +11,7 @@ import ${entityClassPath};
 @Service
 public class ${serviceClass.className} extends ${serviceClass.baseServiceName}<${entityClass.className}, Long> {
     @Autowired
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     private ${daoClass.className} ${daoClass.className ? uncap_first};
 
     protected ${daoClass.baseDaoName}<${entityClass.className}, Long> getDao(){
