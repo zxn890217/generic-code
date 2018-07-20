@@ -4,7 +4,7 @@
       <#list entityClass.columns as column>
       <#if !column.primaryKey>
       <el-form-item :label="$t('${entityClass.className ? uncap_first}.${column.fieldName}')">
-        <el-input v-model="form.${column.fieldName}" readonly></el-input>
+        <el-input value="{{form.${column.fieldName}}}" readonly></el-input>
       </el-form-item>
       </#if>
       </#list>
