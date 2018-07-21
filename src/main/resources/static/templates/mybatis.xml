@@ -45,7 +45,7 @@
         WHERE ${primaryKey.columnName} = ${r'#{'}id}
     </update>
 
-    <delete id="delete" parameterType="${entityClassPath}">
+    <delete id="delete" parameterType="long">
         DELETE FROM ${tableName}
         WHERE ${primaryKey.columnName} = ${r'#{'}id}
     </delete>
